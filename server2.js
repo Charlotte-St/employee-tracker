@@ -63,6 +63,18 @@ async function getRoles(){
      // });
    // });
 
+function addDepartment(){
+    inquirer.prompt([{type: 'input',
+name: 'Department name'}]).then((answer) => {
+        pool.query(`INSERT INTO department(name) WHERE name = $1 RETURNING id`, [answer.name] , function(err, {rows}) {
+            if (err){
+                console.log(err);
+            }
+            console.log(rows)
+        })
+    })
+}
+
 
    const trackerMenu = () => {
     const menuOptions = [
@@ -84,23 +96,27 @@ async function getRoles(){
    };
 
 const tracker = async () => {
-    //for (let i = 0; i < 100; i++){
     await trackerMenu().then((choice) => {
         switch (choice.activity){
            case "View all departments": getDepartments();
-           trackerMenu();
+           //trackerMenu();
            break;
            case 'View all employees': getEmployees();
+           break;
            case 'View all roles': getRoles();
-           case 'Add a department': console.log('Add a department');
+           break;
+           case 'Add a department': addDepartment();
+           break;
            case 'Add a role': console.log('Add a role');
+           break;
            case 'Add an employee': console.log('Add an employee');
+           break;
            case 'Update an employee role': console.log('Add an employee');
+           break;
            case 'Quit': console.log("Thank you for using Employee Tracker!");
                break;
            }
       })
-   // };
 };
 
 tracker();

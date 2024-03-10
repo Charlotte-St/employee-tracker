@@ -20,7 +20,7 @@ console.log('Connected to the employee_tracker_db database!')
 
 pool.connect();
 
-
+//Endpoints used for testing
 app.get('/api/department', (req, res) => {
         pool.query('SELECT * FROM department', function (err, {rows}) {
             res.status(200).json({rows});
@@ -35,6 +35,14 @@ app.get('/api/role', (req, res) => {
     console.log('Success');
     });
 
+//Menu Functions 
+async function getDepartments(){
+    pool.query('SELECT * FROM department', function (err, {rows}) {
+        console.table(rows);
+        });
+    console.log('Success');
+    };
+
 async function getEmployees(){
     pool.query('SELECT first_name AS "First Name", last_name AS "Last Name", manager_id AS "Manager" FROM employee', function (err, {rows}) {
         console.table(rows);
@@ -42,14 +50,24 @@ async function getEmployees(){
     console.log('Success');
     };
 
-//getEmployees();
 
-//app.delete('/api//:id', (req, res) => {
-  //  const id = req.params.id;
-    //pool.query(`DELETE FROM movies WHERE id = $1`, [id], function (err, {rows}) {
-      //  res.status(200).json({rows});
-     // });
-   // });
+async function getRoles(){
+    pool.query('SELECT * FROM role', function (err, {rows}) {
+            console.table(rows);
+            });
+    console.log('Success');
+    };
+
+
+function addDepartment(){
+    inquirer.prompt([{type: 'input',
+name: 'deptName'}]).then((answer) => {console.log(answer.deptName);
+    pool.query(`INSERT INTO department VALUES($1)`, [answer.deptName], function(err,res){
+        if (err) {console.log(err)}
+        else console.log('New department added')
+    })
+        })
+    }
 
 
    const trackerMenu = () => {
@@ -72,28 +90,27 @@ async function getEmployees(){
    };
 
 const tracker = async () => {
-    //for (let i = 0; i < 100; i++){
     await trackerMenu().then((choice) => {
         switch (choice.activity){
-           case "View all departments": getEmployees();
-           let employeePromise = new Promise(function(displayMenu){
-            if (rows) {console.log("OK")} else{
-                console.log("Error")
-            }
-        });
-        employeePromise.then(trackerMenu);
+           case "View all departments": getDepartments();
+           //trackerMenu();
            break;
-           case 'View all employees': console.log('View all employees');
-           case 'View all roles': console.log('View all roles');
-           case 'Add a department': console.log('Add a department');
+           case 'View all employees': getEmployees();
+           break;
+           case 'View all roles': getRoles();
+           break;
+           case 'Add a department': addDepartment();
+           break;
            case 'Add a role': console.log('Add a role');
+           break;
            case 'Add an employee': console.log('Add an employee');
+           break;
            case 'Update an employee role': console.log('Add an employee');
+           break;
            case 'Quit': console.log("Thank you for using Employee Tracker!");
                break;
            }
       })
-   // };
 };
 
 tracker();
