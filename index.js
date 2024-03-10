@@ -22,6 +22,25 @@ pool.connect();
 
 //Inquirer prompts
 
+//To do! Wrap inquirer prompt in init function
+
+inquirer.prompt([
+    {
+        type: 'list',
+        name: 'activity',
+        message: 'What would you like to do?',
+        choices: ['View all departments', 
+        'View all roles', 
+        'View all employees', 
+        'Add a department', 
+        'Add a role', 
+        'Add an employee', 
+        'Update an employee role']
+    }
+]).then(
+//Add switch case for each choice
+)
+
 app.listener(PORT, () =>{
     console.log(`Server listening on port ${PORT}`);
 });
