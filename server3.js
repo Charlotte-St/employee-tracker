@@ -158,24 +158,27 @@ function addEmployee(){
             })
                 }
     )
-}
+};
+
+var roleList2 = [];
+var employeeList2 =[];
 
 function updateEmployee(){
-    var roleList = [] ;
     pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
-        let titles = rows;
-       for (let i = 0; i < titles.length; i++){
-        roleList.push({name: titles[i].title, value: titles[i].id});
+        let roleTitle = rows;
+        console.log(rows);
+       for (let i = 0; i < roleTitle.length; i++){
+        roleList2.push({name: roleTitle[i].title, value: roleTitle[i].id});
        }
-    });
-    var employeeList = [];
-    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
-        let managers = rows;
-        for (let i = 0; i < managers.length; i++){
-            employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
-        }
-    })
 
+    });
+    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
+        let empl = rows;
+        console.log(rows);
+        for (let i = 0; i < empl.length; i++){
+         employeeList2.push({name: empl[i].first_name + ' '+ empl[i].last_name, value: empl[i].id})
+        }
+    });
 
     inquirer.prompt(
         [
@@ -183,13 +186,13 @@ function updateEmployee(){
                 type: 'list',
                 name: 'updatedEmployee',
                 message: "Which employee would you like to update?",
-                choices: employeeList
+                choices: employeeList2
             },
             {
                 type: 'list',
                 name: 'updatedRole',
                 message: "What should the employees new role be?",
-                choices: roleList
+                choices: roleList2
             }
         ]
     ).then(
@@ -201,7 +204,7 @@ function updateEmployee(){
             })
                 }
     )
-}
+};
 
 //Menu options
    const trackerMenu = () => {
