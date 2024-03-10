@@ -1,5 +1,5 @@
-DROP DATABSE IF EXISTS employee_tracker_db;
-CREATE DATABSE employee_tracker_db;
+DROP DATABASE IF EXISTS employee_tracker_db;
+CREATE DATABASE employee_tracker_db;
 
 \c employee_tracker_db;
 
