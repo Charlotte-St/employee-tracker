@@ -123,7 +123,7 @@ function addEmployee(){
         }
     })
 
-    console.log(roleList);
+    //console.log(roleList);
     inquirer.prompt(
         [
             {
@@ -151,7 +151,6 @@ function addEmployee(){
         ]
     ).then(
         (answer) => {
-            //fix role and manager so they connect to right data
             pool.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [`${answer.firstName}`,`${answer.lastName}`,`${answer.role}`,`${answer.manager}`],
              function(err,res){
                 if (err) {console.log(err)}
@@ -161,6 +160,48 @@ function addEmployee(){
     )
 }
 
+function updateEmployee(){
+    var roleList = [] ;
+    pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
+        let titles = rows;
+       for (let i = 0; i < titles.length; i++){
+        roleList.push({name: titles[i].title, value: titles[i].id});
+       }
+    });
+    var employeeList = [];
+    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
+        let managers = rows;
+        for (let i = 0; i < managers.length; i++){
+            employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
+        }
+    })
+
+
+    inquirer.prompt(
+        [
+            {
+                type: 'list',
+                name: 'updatedEmployee',
+                message: "Which employee would you like to update?",
+                choices: employeeList
+            },
+            {
+                type: 'list',
+                name: 'updatedRole',
+                message: "What should the employees new role be?",
+                choices: roleList
+            }
+        ]
+    ).then(
+        (answer) => {
+            pool.query(`UPDATE employee(role_id) VALUES ($1) WHERE employee.id = ($2)`, [`${answer.updatedRole}`,`${answer.updatedEmployee}`],
+             function(err,res){
+                if (err) {console.log(err)}
+                else console.log('Employee role updated')
+            })
+                }
+    )
+}
 
 //Menu options
    const trackerMenu = () => {
@@ -186,7 +227,6 @@ const tracker = async () => {
     await trackerMenu().then((choice) => {
         switch (choice.activity){
            case "View all departments": getDepartments();
-           //trackerMenu();
            break;
            case 'View all employees': getEmployees();
            break;
@@ -198,7 +238,7 @@ const tracker = async () => {
            break;
            case 'Add an employee': addEmployee();
            break;
-           case 'Update an employee role': console.log('Add an employee');
+           case 'Update an employee role': updateEmployee();
            break;
            case 'Quit': console.log("Thank you for using Employee Tracker!");
                break;
