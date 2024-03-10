@@ -1,6 +1,6 @@
 const express = require('express');
 const inquirer = require('inquirer');
-//const { Pool } = require('pg');
+const { Pool } = require('pg');
 
 const PORT = 3001;
 const app = express();
@@ -8,17 +8,20 @@ const app = express();
 app.use(express.urlencoded({exprended: false}));
 app.use(express.json());
 
-//const pool = new Pool(
-  //  {
-    //    user: 'postgres',
-      //  password: 'tryto1',
-       // host: 'localhost',
-        //database: 'employee_tracker_db'
-    //},
-    //console.log('Connected to the employee_tracker_db database')
-//)
+const pool = new Pool(
+    {
+        user: 'postgres',
+        password: 'tryto1',
+        host: 'localhost',
+        database: 'employee_tracker_db'
+    },
+    console.log('Connected to the employee_tracker_db database')
+);
 
-//pool.connect();
+pool.connect();
+//pool.query('SELECT * FROM department', function(err, {rows}){
+  //  console.log(rows)
+//});
 
 console.log("Employee Tracker");
 
@@ -45,7 +48,14 @@ inquirer.prompt([
 .then(
   (choice) => {
      switch (choice.activity){
-        case 'View all departments': console.log('View all departments');
+        case "View all departments": console.log('View all departments chosen');
+        app.get('/api/department', (req, res) => {
+            pool.query('SELECT * FROM department', function(err, {rows}){
+                res.status(200).json({rows});
+            })
+        }
+        );
+        break;
         case 'View all employees': console.log('View all employees');
         case 'View all roles': console.log('View all roles');
         case 'Add a department': console.log('Add a department');
@@ -58,6 +68,6 @@ inquirer.prompt([
    }
 )
 
-//app.listener(PORT, () =>{
-  //  console.log(`Server listening on port ${PORT}`);
-//});
+app.listen(PORT, () =>{
+  console.log(`Server listening on port ${PORT}`);
+});
