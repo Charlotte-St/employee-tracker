@@ -73,6 +73,14 @@ function addDepartment(){
     }
 
 function addEmployee(){
+    var roleList = [] ;
+    pool.query(`SELECT title FROM role`, (err, {rows})=>{
+        let titles = rows;
+       for (let i = 0; i < titles.length; i++){
+        roleList.push(titles[i].title);
+       }
+    })
+    console.log(roleList);
     inquirer.prompt(
         [
             {
@@ -86,9 +94,10 @@ function addEmployee(){
                 message: "What is the employee's last name?"                
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'role',
-                message: "What is the employee's role?"
+                message: 'What role should the employee have?',
+                choices: roleList
             },
             {
                 type: 'input',
@@ -108,6 +117,8 @@ function addEmployee(){
     )
 }
 
+
+//Menu options
    const trackerMenu = () => {
     const menuOptions = [
        {
