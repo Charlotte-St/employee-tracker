@@ -32,23 +32,28 @@ inquirer.prompt([
         name: 'activity',
         message: 'What would you like to do?',
         choices: ["View all departments", 
+        "View all employees",
         "View all roles",
         "Add a department",
-        "Add a role", 
         "Add an employee",
-        "Update an employee role"
+        "Add a role", 
+        "Update an employee role",
+        "Quit"
     ]
     }
 ])
 .then(
   (choice) => {
      switch (choice.activity){
-        case 'View all roles': console.log('View all roles');
+        case 'View all departments': console.log('View all departments');
         case 'View all employees': console.log('View all employees');
+        case 'View all roles': console.log('View all roles');
         case 'Add a department': console.log('Add a department');
         case 'Add a role': console.log('Add a role');
         case 'Add an employee': console.log('Add an employee');
         case 'Update an employee role': console.log('Add an employee');
+        case 'Quit': console.log("Thank you for using Employee Tracker!");
+            break;
         }
    }
 )

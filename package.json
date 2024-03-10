@@ -10,7 +10,7 @@
     "dependencies": {
       "express": "^4.17.1",
       "pg": "^8.11.3",
-      "inquirer": "^8.2.4"
+      "inquirer": "8.2.4"
     }
   }
   
