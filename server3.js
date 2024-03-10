@@ -160,13 +160,13 @@ function addEmployee(){
     )
 };
 
-var roleList2 = [];
+/* var roleList2 = [];
 var employeeList2 =[];
 
 function updateEmployee(){
     pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
         let roleTitle = rows;
-        console.log(rows);
+        //console.log(rows);
        for (let i = 0; i < roleTitle.length; i++){
         roleList2.push({name: roleTitle[i].title, value: roleTitle[i].id});
        }
@@ -174,11 +174,13 @@ function updateEmployee(){
     });
     pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
         let empl = rows;
-        console.log(rows);
+        //console.log(rows);
         for (let i = 0; i < empl.length; i++){
          employeeList2.push({name: empl[i].first_name + ' '+ empl[i].last_name, value: empl[i].id})
         }
     });
+
+console.log(employeeList2)
 
     inquirer.prompt(
         [
@@ -204,6 +206,35 @@ function updateEmployee(){
             })
                 }
     )
+}; */
+
+
+function updateEmployee(){
+    var emplList = [];
+    var roleUpdateList = [];
+    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows}) => {
+        let empls = rows;
+        for (let i = 0; i < empls.length; i++){
+            emplList.push({name: `${empls[i].first_name} ${empls[i].last_name}`, value: empls[i].id})
+        }
+        console.log(emplList)
+    });
+
+    pool.query(`SELECT title, id FROM role`, (err, {rows}) => {
+        let roleUpdate = rows;
+        for (let i = 0; i < roleUpdate.length; i++){
+            roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
+        }
+    });
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employeeUpdate',
+            message: 'Which employee would you like to update?',
+            choices: emplList
+        }
+    ])
 };
 
 //Menu options
