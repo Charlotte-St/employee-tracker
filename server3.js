@@ -74,10 +74,10 @@ function addDepartment(){
 
 function addEmployee(){
     var roleList = [] ;
-    pool.query(`SELECT title FROM role`, (err, {rows})=>{
+    pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
         let titles = rows;
        for (let i = 0; i < titles.length; i++){
-        roleList.push(titles[i].title);
+        roleList.push({name: titles[i].title, value: titles[i].id});
        }
     })
     console.log(roleList);
