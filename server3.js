@@ -62,7 +62,8 @@ async function getRoles(){
 function addDepartment(){
     inquirer.prompt([{
         type: 'input',
-        name: 'deptName'
+        name: 'deptName',
+        message: 'What department would you like to add?'
     }]).then((answer) => {console.log(answer.deptName);
     pool.query(`INSERT INTO department(name) VALUES($1)`, [`${answer.deptName}`], function(err,res){
         if (err) {console.log(err)}
@@ -71,6 +72,41 @@ function addDepartment(){
         })
     }
 
+function addEmployee(){
+    inquirer.prompt(
+        [
+            {
+                type: 'input',
+                name: 'firstName',
+                message: "What is the employee's first name?"
+            },
+            { 
+                type: 'input',
+                name: 'lastName',
+                message: "What is the employee's last name?"                
+            },
+            {
+                type: 'input',
+                name: 'role',
+                message: "What is the employee's role?"
+            },
+            {
+                type: 'input',
+                name: 'manager',
+                message: "Who is the employee's manager?"
+            }
+        ]
+    ).then(
+        (answer) => {
+            //fix role and manager so they connect to right data
+            pool.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [`${answer.firstName}`,`${answer.lastName}`,`${answer.role}`,`${answer.manager}`],
+             function(err,res){
+                if (err) {console.log(err)}
+                else console.log('New employee added')
+            })
+                }
+    )
+}
 
    const trackerMenu = () => {
     const menuOptions = [
@@ -105,7 +141,7 @@ const tracker = async () => {
            break;
            case 'Add a role': console.log('Add a role');
            break;
-           case 'Add an employee': console.log('Add an employee');
+           case 'Add an employee': addEmployee();
            break;
            case 'Update an employee role': console.log('Add an employee');
            break;
