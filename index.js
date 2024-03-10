@@ -48,13 +48,13 @@ inquirer.prompt([
 .then(
   (choice) => {
      switch (choice.activity){
-        case "View all departments": console.log('View all departments chosen');
+        case "View all departments":
         app.get('/api/department', (req, res) => {
-            pool.query('SELECT * FROM department', function(err, {rows}){
+            pool.query('SELECT * FROM department', function (err, {rows}) {
                 res.status(200).json({rows});
-            })
-        }
-        );
+              });
+            console.log('Success');
+            });
         break;
         case 'View all employees': console.log('View all employees');
         case 'View all roles': console.log('View all roles');
@@ -67,6 +67,11 @@ inquirer.prompt([
         }
    }
 )
+
+app.use((req, res) => {
+    res.status(404).end();
+  });
+  
 
 app.listen(PORT, () =>{
   console.log(`Server listening on port ${PORT}`);
