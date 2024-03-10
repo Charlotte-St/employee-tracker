@@ -20,6 +20,8 @@ app.use(express.json());
 
 //pool.connect();
 
+console.log("Employee Tracker");
+
 //Inquirer prompts
 
 //To do! Wrap inquirer prompt in init function
@@ -29,27 +31,26 @@ inquirer.prompt([
         type: 'list',
         name: 'activity',
         message: 'What would you like to do?',
-        choices: ['View all departments', 
-        'View all roles', 
-        'View all employees', 
-        'Add a department', 
-        'Add a role', 
-        'Add an employee', 
-        'Update an employee role']
+        choices: ["View all departments", 
+        "View all roles",
+        "Add a department",
+        "Add a role", 
+        "Add an employee",
+        "Update an employee role"
+    ]
     }
-]).then(
-    (choice) => {
-        switch (choice.activity){
-            case 'View all roles': console.log('View all roles');
-            case 'View all employees': console.log('View all employees');
-            case 'Add a department': console.log('Add a department');
-            case 'Add a role': console.log('Add a role');
-            case 'Add an employee': console.log('Add an employee');
-            case 'Update an employee role': console.log('Add an employee');
+])
+.then(
+  (choice) => {
+     switch (choice.activity){
+        case 'View all roles': console.log('View all roles');
+        case 'View all employees': console.log('View all employees');
+        case 'Add a department': console.log('Add a department');
+        case 'Add a role': console.log('Add a role');
+        case 'Add an employee': console.log('Add an employee');
+        case 'Update an employee role': console.log('Add an employee');
         }
-    }
-
-//Add switch case for each choice
+   }
 )
 
 //app.listener(PORT, () =>{
