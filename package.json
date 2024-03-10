@@ -1,0 +1,16 @@
+{
+    "name": "employee-tracker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "express": "^4.17.1",
+      "pg": "^8.11.3",
+      "inquirer": "^8.2.4"
+    }
+  }
+  
