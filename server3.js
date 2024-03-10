@@ -60,9 +60,11 @@ async function getRoles(){
 
 
 function addDepartment(){
-    inquirer.prompt([{type: 'input',
-name: 'deptName'}]).then((answer) => {console.log(answer.deptName);
-    pool.query(`INSERT INTO department VALUES($1)`, [answer.deptName], function(err,res){
+    inquirer.prompt([{
+        type: 'input',
+        name: 'deptName'
+    }]).then((answer) => {console.log(answer.deptName);
+    pool.query(`INSERT INTO department(name) VALUES($1)`, [`${answer.deptName}`], function(err,res){
         if (err) {console.log(err)}
         else console.log('New department added')
     })
