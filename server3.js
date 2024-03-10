@@ -70,7 +70,42 @@ function addDepartment(){
         else console.log('New department added')
     })
         })
+    };
+
+function addRole(){
+    var deptList = [] ;
+    pool.query(`SELECT id, name FROM department`, (err, {rows})=>{
+        let depts = rows;
+       for (let i = 0; i < depts.length; i++){
+        deptList.push({name: depts[i].name, value: depts[i].id});
+       }
+    });
+    inquirer.prompt([{
+        type: 'input',
+        name: 'roleName',
+        message: 'What is the title of the new role?'
+    },
+    {
+        type: 'input',
+        name: 'salary',
+        message: 'What is the salary for this position?'
+    },
+    {
+        type: 'list',
+        name: 'department',
+        message: 'What department is this position in?',
+        choices: deptList
     }
+]).then((answer) => {
+        pool.query(`INSERT INTO role(title, salary, department) VALUES ($1, $2, $3)`, 
+        [`${answer.roleName}`, `${answer.salary}`, `${answer.department}`],
+        function(err,res){
+            if (err) {console.log(err)}
+            else console.log('New role added')}
+        
+        )
+    })
+}
 
 function addEmployee(){
     var roleList = [] ;
@@ -79,7 +114,15 @@ function addEmployee(){
        for (let i = 0; i < titles.length; i++){
         roleList.push({name: titles[i].title, value: titles[i].id});
        }
+    });
+    var employeeList = [];
+    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
+        let managers = rows;
+        for (let i = 0; i < managers.length; i++){
+            employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
+        }
     })
+
     console.log(roleList);
     inquirer.prompt(
         [
@@ -100,9 +143,10 @@ function addEmployee(){
                 choices: roleList
             },
             {
-                type: 'input',
+                type: 'list',
                 name: 'manager',
-                message: "Who is the employee's manager?"
+                message: "Who is the employee's manager?",
+                choices: employeeList
             }
         ]
     ).then(
@@ -150,7 +194,7 @@ const tracker = async () => {
            break;
            case 'Add a department': addDepartment();
            break;
-           case 'Add a role': console.log('Add a role');
+           case 'Add a role': addRole();
            break;
            case 'Add an employee': addEmployee();
            break;
