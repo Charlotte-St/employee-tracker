@@ -44,10 +44,11 @@ async function getDepartments(){
     };
 
 async function getEmployees(){
-    pool.query('SELECT first_name AS "First Name", last_name AS "Last Name", manager_id AS "Manager" FROM employee', function (err, {rows}) {
+    pool.query('SELECT employee.first_name AS "First Name", employee.last_name AS "Last Name", role.title AS "Title", department.name AS "Department", role.salary AS "Salary", employee.manager_id as "Manager" FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department = department.id',
+     function (err, {rows}) {
         console.table(rows);
         });
-    console.log('Success');
+    //console.log('Success');
     };
 
 
