@@ -15,13 +15,13 @@ const pool = new Pool(
     host: 'localhost',
     database: 'employee_tracker_db'
 },
-console.log('Connected to the employee_tracker_db database!')
+//console.log('Connected to the employee_tracker_db database!')
 )
 
 pool.connect();
 
 //Endpoints used for testing
-app.get('/api/department', (req, res) => {
+/*app.get('/api/department', (req, res) => {
         pool.query('SELECT * FROM department', function (err, {rows}) {
             res.status(200).json({rows});
           });
@@ -33,30 +33,27 @@ app.get('/api/role', (req, res) => {
         res.status(200).json({rows});
       });
     console.log('Success');
-    });
+    }); */
 
 //Menu Functions 
-async function getDepartments(){
+function getDepartments(){
     pool.query('SELECT * FROM department', function (err, {rows}) {
         console.table(rows);
         });
-    console.log('Success');
     };
 
-async function getEmployees(){
+function getEmployees(){
     pool.query('SELECT employee.first_name AS "First Name", employee.last_name AS "Last Name", role.title AS "Title", department.name AS "Department", role.salary AS "Salary", employee.manager_id as "Manager" FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department = department.id',
      function (err, {rows}) {
         console.table(rows);
         });
-    //console.log('Success');
     };
 
 
-async function getRoles(){
+function getRoles(){
     pool.query('SELECT * FROM role', function (err, {rows}) {
             console.table(rows);
             });
-    console.log('Success');
     };
 
 
@@ -213,7 +210,7 @@ console.log(employeeList2)
 function updateEmployee(){
     var emplList = [];
     var roleUpdateList = [];
-    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows}) => {
+    pool.query('SELECT id, first_name, last_name FROM employee', (err, {rows}) => {
         let empls = rows;
         for (let i = 0; i < empls.length; i++){
             emplList.push({name: `${empls[i].first_name} ${empls[i].last_name}`, value: empls[i].id})
@@ -221,7 +218,7 @@ function updateEmployee(){
         console.log(emplList)
     });
 
-    pool.query(`SELECT title, id FROM role`, (err, {rows}) => {
+    pool.query('SELECT title, id FROM role', (err, {rows}) => {
         let roleUpdate = rows;
         for (let i = 0; i < roleUpdate.length; i++){
             roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
@@ -258,8 +255,9 @@ function updateEmployee(){
     return inquirer.prompt(menuOptions);
    };
 
-const tracker = async () => {
-    await trackerMenu().then((choice) => {
+const tracker = () => {
+    console.log('Employee Tracker!');
+    trackerMenu().then((choice) => {
         switch (choice.activity){
            case "View all departments": getDepartments();
            break;
