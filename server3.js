@@ -40,6 +40,7 @@ function getDepartments(){
     pool.query('SELECT * FROM department', function (err, {rows}) {
         console.table(rows);
         });
+    menu();
     };
 
 function getEmployees(){
@@ -47,6 +48,7 @@ function getEmployees(){
      function (err, {rows}) {
         console.table(rows);
         });
+        menu();
     };
 
 
@@ -54,6 +56,7 @@ function getRoles(){
     pool.query('SELECT * FROM role', function (err, {rows}) {
             console.table(rows);
             });
+        menu();
     };
 
 
@@ -68,6 +71,7 @@ function addDepartment(){
         else console.log('New department added')
     })
         })
+        menu();
     };
 
 function addRole(){
@@ -103,6 +107,7 @@ function addRole(){
         
         )
     })
+    menu();
 }
 
 function addEmployee(){
@@ -119,6 +124,7 @@ function addEmployee(){
         for (let i = 0; i < managers.length; i++){
             employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
         }
+        
     })
 
     //console.log(roleList);
@@ -156,6 +162,7 @@ function addEmployee(){
             })
                 }
     )
+    menu();
 };
 
 /* var roleList2 = [];
@@ -236,7 +243,7 @@ function updateEmployee(){
 };
 
 //Menu options
-   const trackerMenu = () => {
+   /* const trackerMenu = () => {
     const menuOptions = [
        {
         type: 'list',
@@ -253,11 +260,50 @@ function updateEmployee(){
        }
     ];
     return inquirer.prompt(menuOptions);
-   };
+   }; */
 
-const tracker = () => {
+/* const tracker = () => {
     console.log('Employee Tracker!');
     trackerMenu().then((choice) => {
+        switch (choice.activity){
+           case "View all departments": getDepartments();
+           break;
+           tracker();
+           case 'View all employees': getEmployees();
+           break;
+           case 'View all roles': getRoles();
+           break;
+           case 'Add a department': addDepartment();
+           break;
+           case 'Add a role': addRole();
+           break;
+           case 'Add an employee': addEmployee();
+           break;
+           case 'Update an employee role': updateEmployee();
+           break;
+           case 'Quit': console.log("Thank you for using Employee Tracker!");
+               break;
+           }
+      })
+}; */
+
+function menu(){
+inquirer.prompt(
+[
+    {
+     type: 'list',
+     name: 'activity',
+     message: 'What would you like to do?',
+     choices: ["View all departments", 
+     "View all employees",
+     "View all roles",
+     "Add a department",
+     "Add an employee",
+     "Add a role", 
+     "Update an employee role",
+     "Quit"]
+    }
+ ]).then((choice) => {
         switch (choice.activity){
            case "View all departments": getDepartments();
            break;
@@ -279,7 +325,9 @@ const tracker = () => {
       })
 };
 
-tracker();
+menu();
+
+//tracker();
 
 app.use((req, res) => {
   res.status(404).end();
