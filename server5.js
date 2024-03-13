@@ -28,7 +28,7 @@ function getDepartments(){
     };
 
 function getEmployees(){
-    pool.query('SELECT employee.first_name AS "First Name", employee.last_name AS "Last Name", role.title AS "Title", department.name AS "Department", role.salary AS "Salary", employee.manager_id as "Manager" FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department = department.id',
+    pool.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, CONCAT(manager.first_name,' ',manager.last_name) as manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department = department.id LEFT JOIN employee manager on manager.id = employee.manager_id",
      function (err, {rows}) {
         console.table(rows);
         tracker();
@@ -146,54 +146,6 @@ function addEmployee(){
                 }
     )
 };
-
-/* var roleList2 = [];
-var employeeList2 =[];
-
-function updateEmployee(){
-    pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
-        let roleTitle = rows;
-        //console.log(rows);
-       for (let i = 0; i < roleTitle.length; i++){
-        roleList2.push({name: roleTitle[i].title, value: roleTitle[i].id});
-       }
-
-    });
-    pool.query(`SELECT id, first_name, last_name FROM employee`, (err, {rows})=>{
-        let empl = rows;
-        //console.log(rows);
-        for (let i = 0; i < empl.length; i++){
-         employeeList2.push({name: empl[i].first_name + ' '+ empl[i].last_name, value: empl[i].id})
-        }
-    });
-
-console.log(employeeList2)
-
-    inquirer.prompt(
-        [
-            {
-                type: 'list',
-                name: 'updatedEmployee',
-                message: "Which employee would you like to update?",
-                choices: employeeList2
-            },
-            {
-                type: 'list',
-                name: 'updatedRole',
-                message: "What should the employees new role be?",
-                choices: roleList2
-            }
-        ]
-    ).then(
-        (answer) => {
-            pool.query(`UPDATE employee(role_id) VALUES ($1) WHERE employee.id = ($2)`, [`${answer.updatedRole}`,`${answer.updatedEmployee}`],
-             function(err,res){
-                if (err) {console.log(err)}
-                else console.log('Employee role updated')
-            })
-                }
-    )
-}; */
 
 
 function updateEmployee(){
