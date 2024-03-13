@@ -37,7 +37,7 @@ function getEmployees(){
 
 
 function getRoles(){
-    pool.query('SELECT * FROM role', function (err, {rows}) {
+    pool.query('SELECT role.title, role.id, department.name, role.salary FROM role LEFT JOIN department on role.department = department.id', function (err, {rows}) {
             console.table(rows);
             tracker();
             });
