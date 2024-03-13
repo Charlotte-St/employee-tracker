@@ -18,6 +18,8 @@ The schema and seed files included with this repo are written to be executed in 
 
 The app is run by calling it on the command line. From there, users can use their keyboard to toggle through options, select options, and complete prompts. 
 
+[Employee Tracker Demo Video](https://drive.google.com/file/d/1u753ohnVeBGY_Xhegi2p2CLfYkHStJ1p/view?usp=sharing)
+
 ## Testing
 
 N/A
