@@ -15,25 +15,9 @@ const pool = new Pool(
     host: 'localhost',
     database: 'employee_tracker_db'
 },
-//console.log('Connected to the employee_tracker_db database!')
 )
 
 pool.connect();
-
-//Endpoints used for testing
-/*app.get('/api/department', (req, res) => {
-        pool.query('SELECT * FROM department', function (err, {rows}) {
-            res.status(200).json({rows});
-          });
-        console.log('Success');
-        });
-    
-app.get('/api/role', (req, res) => {
-    pool.query('SELECT * FROM role', function (err, {rows}) {
-        res.status(200).json({rows});
-      });
-    console.log('Success');
-    }); */
 
 //Menu Functions 
 function getDepartments(){
@@ -47,7 +31,7 @@ function getEmployees(){
     pool.query('SELECT employee.first_name AS "First Name", employee.last_name AS "Last Name", role.title AS "Title", department.name AS "Department", role.salary AS "Salary", employee.manager_id as "Manager" FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department = department.id',
      function (err, {rows}) {
         console.table(rows);
-        //trackerMenu();
+        tracker();
         });
     };
 
@@ -55,6 +39,7 @@ function getEmployees(){
 function getRoles(){
     pool.query('SELECT * FROM role', function (err, {rows}) {
             console.table(rows);
+            tracker();
             });
     };
 
@@ -68,7 +53,7 @@ function addDepartment(){
     pool.query(`INSERT INTO department(name) VALUES($1)`, [`${answer.deptName}`], function(err,res){
         if (err) {console.log(err)}
         else console.log('New department added');
-        //trackerMenu();
+        tracker();
     })
         })
     };
@@ -104,7 +89,7 @@ function addRole(){
             if (err) {console.log(err)}
             else console.log('New role added')}
         )
-        //trackerMenu();
+        tracker();
     })
 }
 
@@ -122,9 +107,9 @@ function addEmployee(){
         for (let i = 0; i < managers.length; i++){
             employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
         }
+        tracker();
     })
 
-    //console.log(roleList);
     inquirer.prompt(
         [
             {
@@ -156,7 +141,7 @@ function addEmployee(){
              function(err,res){
                 if (err) {console.log(err)}
                 else console.log('New employee added');
-                //trackerMenu();
+                tracker();
             })
                 }
     )
@@ -216,15 +201,10 @@ function updateEmployee(){
     var roleUpdateList = [];
     pool.query('SELECT id, first_name, last_name FROM employee', (err, {rows}) => {
         let empls = rows;
-        /*for (let i = 0; i < empls.length; i++){
-            emplList.push({name: `${empls[i].first_name} ${empls[i].last_name}`, value: empls[i].id})
-        }*/
         empList = empls.map(({id, first_name, last_name}) => ({
             name: `${first_name} ${last_name}`,
             value: id,
         }));
-        //console.log(empList)
-
         inquirer.prompt([
             {
                 type: 'list',
@@ -233,28 +213,62 @@ function updateEmployee(){
                 choices: empList
             }
         ]).then((empChoice) => {
-            /*pool.query('SELECT title, id FROM role', (err, {rows}) => {
+            pool.query('SELECT title, id FROM role', (err, {rows}) => {
                 let roleUpdate = rows;
                 for (let i = 0; i < roleUpdate.length; i++){
                     roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
                 }
-            });*/
+            })
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'updatedRole',
+                    message: "What should the employees new role be?",
+                    choices: roleUpdateList
+                }
+            ])
+        }).then(
+            (answer) => {
+               /* pool.query(`UPDATE employee(role_id) VALUES ($1) WHERE employee.id = ($2)`, [`${answer.updatedRole}`,`${answer.employeeUpdate}`],
+                 function(err,res){
+                    if (err) {console.log(err)}
+                    else console.log('Employee role updated') */
+
+                    console.log(answer)
+                });
+        })
+            }
+     //   )
+  //  }
+  //  )
+//};
+        
+        
+        
+        
+        /*.then((empChoice) => {
+            pool.query('SELECT title, id FROM role', (err, {rows}) => {
+                let roleUpdate = rows;
+                for (let i = 0; i < roleUpdate.length; i++){
+                    roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
+                }
+            });
     
-            console.log(empChoice.employeeUpdate);
+          console.log(empChoice.employeeUpdate);
     
     
         });
-    });
+    }); 
 
-    /*pool.query('SELECT title, id FROM role', (err, {rows}) => {
+    pool.query('SELECT title, id FROM role', (err, {rows}) => {
         let roleUpdate = rows;
         for (let i = 0; i < roleUpdate.length; i++){
             roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
         }
-    });*/
+    });
 
     
-};
+}; */
 
 //Menu options
   /* const trackerMenu = () => {
@@ -316,6 +330,8 @@ const tracker = () => {
       })
 };
 
+//Initial displays
+console.log('Employee Tracker');
 tracker();
 
 app.use((req, res) => {
@@ -323,5 +339,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  /*console.log(`Server running on port ${PORT}`); */
 });
