@@ -93,6 +93,8 @@ function addRole(){
     })
 }
 
+
+
 function addEmployee(){
     var roleList = [] ;
     pool.query(`SELECT id, title FROM role`, (err, {rows})=>{
@@ -107,7 +109,7 @@ function addEmployee(){
         for (let i = 0; i < managers.length; i++){
             employeeList.push({name: managers[i].first_name + ' '+ managers[i].last_name, value: managers[i].id})
         }
-        tracker();
+
     })
 
     inquirer.prompt(
@@ -145,7 +147,7 @@ function addEmployee(){
             })
                 }
     )
-};
+}; 
 
 
 function updateEmployee(){
