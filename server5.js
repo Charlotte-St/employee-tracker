@@ -180,6 +180,11 @@ function updateEmployee(){
                     }
 
                 ]
+            ).then((answer) =>{
+                pool.query('UPDATE employee(role_id) VALUES ($1) WHERE employee.id = ($2)', [`${answer.updatedRole}`,`${answer.employeeUpdate}`], function(err, res){if (err) {console.log(err)}
+                else console.log('New employee added');
+                tracker()})
+            }
             )
         }
         )
