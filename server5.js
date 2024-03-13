@@ -153,6 +153,47 @@ function updateEmployee(){
     var roleUpdateList = [];
     pool.query('SELECT id, first_name, last_name FROM employee', (err, {rows}) => {
         let empls = rows;
+        if (err) {
+            throw err
+        } else{
+        empList = empls.map(({id, first_name, last_name}) => ({
+            name: `${first_name} ${last_name}`,
+            value: id,})
+        )
+        pool.query('SELECT title, id FROM role', (err, {rows}) => {
+            roleUpdateList = rows.map(({id, title}) => ({
+                name: title,
+                value: id,
+            }))
+            inquirer.prompt(
+                [
+                    {
+                        type: 'list',
+                        name: 'employeeUpdate',
+                        message: 'Which employee would you like to update?',
+                        choices: empList
+                    },{
+                        type: 'list',
+                        name: 'updatedRole',
+                        message: "What should the employees new role be?",
+                        choices: roleUpdateList
+                    }
+
+                ]
+            )
+        }
+        )
+    }
+}
+    )
+}
+
+
+/*function updateEmployee(){
+    var empList = [];
+    var roleUpdateList = [];
+    pool.query('SELECT id, first_name, last_name FROM employee', (err, {rows}) => {
+        let empls = rows;
         empList = empls.map(({id, first_name, last_name}) => ({
             name: `${first_name} ${last_name}`,
             value: id,
@@ -186,10 +227,10 @@ function updateEmployee(){
                     if (err) {console.log(err)}
                     else console.log('Employee role updated') */
 
-                    console.log(answer)
-                });
-        })
-            }
+                 //   console.log(answer)
+              //  });
+        //})
+            //}
      //   )
   //  }
   //  )
