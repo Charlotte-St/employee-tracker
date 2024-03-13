@@ -193,103 +193,9 @@ function updateEmployee(){
     )
 }
 
-
-/*function updateEmployee(){
-    var empList = [];
-    var roleUpdateList = [];
-    pool.query('SELECT id, first_name, last_name FROM employee', (err, {rows}) => {
-        let empls = rows;
-        empList = empls.map(({id, first_name, last_name}) => ({
-            name: `${first_name} ${last_name}`,
-            value: id,
-        }));
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'employeeUpdate',
-                message: 'Which employee would you like to update?',
-                choices: empList
-            }
-        ]).then((empChoice) => {
-            pool.query('SELECT title, id FROM role', (err, {rows}) => {
-                let roleUpdate = rows;
-                for (let i = 0; i < roleUpdate.length; i++){
-                    roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
-                }
-            })
-            inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'updatedRole',
-                    message: "What should the employees new role be?",
-                    choices: roleUpdateList
-                }
-            ])
-        }).then(
-            (answer) => {
-               /* pool.query(`UPDATE employee(role_id) VALUES ($1) WHERE employee.id = ($2)`, [`${answer.updatedRole}`,`${answer.employeeUpdate}`],
-                 function(err,res){
-                    if (err) {console.log(err)}
-                    else console.log('Employee role updated') */
-
-                 //   console.log(answer)
-              //  });
-        //})
-            //}
-     //   )
-  //  }
-  //  )
-//};
-        
-        
-        
-        
-        /*.then((empChoice) => {
-            pool.query('SELECT title, id FROM role', (err, {rows}) => {
-                let roleUpdate = rows;
-                for (let i = 0; i < roleUpdate.length; i++){
-                    roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
-                }
-            });
-    
-          console.log(empChoice.employeeUpdate);
-    
-    
-        });
-    }); 
-
-    pool.query('SELECT title, id FROM role', (err, {rows}) => {
-        let roleUpdate = rows;
-        for (let i = 0; i < roleUpdate.length; i++){
-            roleUpdateList.push({name: roleUpdate[i].title , value: roleUpdate[i].id})
-        }
-    });
-
-    
-}; */
-
 //Menu options
-  /* const trackerMenu = () => {
-    const menuOptions = [
-       {
-        type: 'list',
-        name: 'activity',
-        message: 'What would you like to do?',
-        choices: ["View all departments", 
-        "View all employees",
-        "View all roles",
-        "Add a department",
-        "Add an employee",
-        "Add a role", 
-        "Update an employee role",
-        "Quit"]
-       }
-    ];
-    return inquirer.prompt(menuOptions);
-   }; */
 
 const tracker = () => {
-    console.log('Employee Tracker!');
     inquirer.prompt(
         [
             {
@@ -329,7 +235,7 @@ const tracker = () => {
 };
 
 //Initial displays
-console.log('Employee Tracker');
+console.log('Employee Tracker!');
 tracker();
 
 app.use((req, res) => {
